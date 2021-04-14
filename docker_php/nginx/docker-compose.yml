@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "8008:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - /data/docker_volumes/php/app:/app
+    mysql:
+        image: mysql:5.7
+        container_name: mysql-server-57
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password
+        restart: always
+        environment:
+          # MYSQL_ROOT_HOST: '%'
+          - MYSQL_ROOT_HOST='%'
+          - MYSQL_ROOT_PASSWORD=r00t
+          - MYSQL_DATABASE=demo
+          - MYSQL_USER=hynial
+          - MYSQL_PASSWORD=hynial
+          - MYSQL_TCP_PORT=13306
+        expose:
+           - "13306"
+        volumes:
+           - /data/docker_volumes/php/mysql:/var/lib/mysql
+           - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
+    php:
+        build:
+            context: .
+            dockerfile: PHP.Dockerfile
+        volumes:
+            - /data/docker_volumes/php/app:/app
+        depends_on:
+           - mysql-server-57

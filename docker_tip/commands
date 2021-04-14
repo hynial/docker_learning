@@ -1,0 +1,11 @@
+# docker use git
+docker run -v ${PWD}:/git alpine/git clone git@github.com:sitepoint-editors/sitepoint-docker-tutorial.git
+
+# docker-compose
+docker-compose up --build
+docker-compose up -d
+
+# To delete all containers run the command
+docker rm $(docker ps -a -q)
+# To delete all images run the command
+docker rmi $(docker images -q)
