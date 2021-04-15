@@ -1,6 +1,7 @@
 version: '3.7'
 services:
     web:
+        container_name: nginx8008
         image: nginx:latest
         ports:
             - "8008:80"
@@ -26,6 +27,7 @@ services:
            - /data/docker_volumes/php/mysql:/var/lib/mysql
            - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
     php:
+        container_name: php9000
         build:
             context: .
             dockerfile: PHP.Dockerfile
