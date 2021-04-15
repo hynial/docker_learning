@@ -4,7 +4,7 @@ services:
         image: nginx:latest
         container_name: nginx8008
         ports:
-            - "8008:8080"
+            - "8008:80"
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
             - /data/docker_volumes/php/app:/app
@@ -25,7 +25,7 @@ services:
         expose:
             - "13307"
         volumes:
-            - /data/docker_volumes/php/mysql:/var/lib/mysql
+            - /data/docker_volumes/php/mysql:/var/lib/mysql # the direcotry should be empty or db will not created.
             - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
     php:
         build:
