@@ -1,8 +1,8 @@
 version: '3.7'
 services:
     web:
-        container_name: nginx8008
         image: nginx:latest
+        container_name: nginx8008
         ports:
             - "8008:80"
         volumes:
@@ -21,16 +21,18 @@ services:
           - MYSQL_USER=hynial
           - MYSQL_PASSWORD=hynial
           - MYSQL_TCP_PORT=13307
+        ports:
+          - '13307:13307'
         expose:
            - "13307"
         volumes:
            - /data/docker_volumes/php/mysql:/var/lib/mysql
            - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
     php:
-        container_name: php9000
         build:
             context: .
             dockerfile: PHP.Dockerfile
+        container_name: php9000
         volumes:
             - /data/docker_volumes/php/app:/app
         depends_on:
