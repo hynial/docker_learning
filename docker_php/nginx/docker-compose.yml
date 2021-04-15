@@ -28,7 +28,7 @@ services:
             - /data/docker_volumes/php/mysql:/var/lib/mysql # the direcotry should be empty or db will not created. sudo rm -rf /data/docker_volumes/php/mysql/*
             - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
             # - ./init/init.sql:/data/init.sql
-            - ./init:/docker-entrypoint-initdb.d # must be a directory. All the .sql's in the directory will be imported.
+            - ./init:/docker-entrypoint-initdb.d # must be a directory. All the .sql's in the directory will be imported. Then it will execute files with extensions .sh, .sql and .sql.gz that are found in /docker-entrypoint-initdb.d. So all you need to do is create /docker-entrypoint-initdb.d directory and put your initialisation script there.
     php:
         build:
             context: .
