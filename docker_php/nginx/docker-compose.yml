@@ -4,7 +4,7 @@ services:
         image: nginx:latest
         container_name: nginx8008
         ports:
-            - "8008:80"
+            - "8008:8080"
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
             - /data/docker_volumes/php/app:/app
@@ -16,9 +16,9 @@ services:
         environment:
           MYSQL_ROOT_HOST: '%' # allow login from any IP, needs to be enclosed with quotes
           MYSQL_ROOT_PASSWORD: r00t
-          MYSQL_DATABASE: demo
-          MYSQL_USER: hynial
-          MYSQL_PASSWORD: hynial
+          MYSQL_DATABASE: 'demo'
+          MYSQL_USER: 'hynial'
+          MYSQL_PASSWORD: 'hynial'
           MYSQL_TCP_PORT: 13307
         ports:
             - '13307:13307'
