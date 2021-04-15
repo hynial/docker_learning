@@ -27,6 +27,7 @@ services:
         volumes:
             - /data/docker_volumes/php/mysql:/var/lib/mysql # the direcotry should be empty or db will not created.
             - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
+            - ./init:/docker-entrypoint-initdb.d
     php:
         build:
             context: .
