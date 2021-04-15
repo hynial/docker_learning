@@ -14,20 +14,19 @@ services:
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password
         restart: always
         environment:
-          # MYSQL_ROOT_HOST: '%'
-          - MYSQL_ROOT_HOST='%'
-          - MYSQL_ROOT_PASSWORD=r00t
-          - MYSQL_DATABASE=demo
-          - MYSQL_USER=hynial
-          - MYSQL_PASSWORD=hynial
-          - MYSQL_TCP_PORT=13307
+            - MYSQL_ROOT_HOST: '%'
+            - MYSQL_ROOT_PASSWORD: r00t
+            - MYSQL_DATABASE: demo
+            - MYSQL_USER: hynial
+            - MYSQL_PASSWORD: hynial
+            - MYSQL_TCP_PORT: 13307
         ports:
-          - '13307:13307'
+            - '13307:13307'
         expose:
-           - "13307"
+            - "13307"
         volumes:
-           - /data/docker_volumes/php/mysql:/var/lib/mysql
-           - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
+            - /data/docker_volumes/php/mysql:/var/lib/mysql
+            - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
     php:
         build:
             context: .
@@ -36,4 +35,4 @@ services:
         volumes:
             - /data/docker_volumes/php/app:/app
         depends_on:
-           - mysql
+            - mysql
