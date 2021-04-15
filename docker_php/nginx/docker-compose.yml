@@ -11,7 +11,7 @@ services:
     mysql:
         image: mysql:5.7
         container_name: mysql-server-57
-        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password # --init-file /data/application/init.sql
         restart: always
         environment:
           MYSQL_ROOT_HOST: '%' # allow login from any IP, needs to be enclosed with quotes
@@ -25,8 +25,9 @@ services:
         expose:
             - "13307"
         volumes:
-            - /data/docker_volumes/php/mysql:/var/lib/mysql # the direcotry should be empty or db will not created.
+            - /data/docker_volumes/php/mysql:/var/lib/mysql # the direcotry should be empty or db will not created. sudo rm -rf /data/docker_volumes/php/mysql/*
             - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
+            # - ./init/init.sql:/data/init.sql
             - ./init:/docker-entrypoint-initdb.d # must be a directory. All the .sql's in the directory will be imported.
     php:
         build:
