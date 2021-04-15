@@ -19,9 +19,9 @@ services:
           - MYSQL_DATABASE=demo
           - MYSQL_USER=hynial
           - MYSQL_PASSWORD=hynial
-          - MYSQL_TCP_PORT=13306
+          - MYSQL_TCP_PORT=13307
         expose:
-           - "13306"
+           - "13307"
         volumes:
            - /data/docker_volumes/php/mysql:/var/lib/mysql
            - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
