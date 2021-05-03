@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set("Asia/Shanghai");
 $dbhost = "139.9.105.19:13307";
 $db_user = "hynial";
 $db_password = "hynial";

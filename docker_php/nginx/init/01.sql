@@ -12,11 +12,11 @@ DROP TABLE IF EXISTS `call_data`;
 CREATE TABLE `call_data` (
   `trx_id` varchar(50) NOT NULL,
   `msisdn` varchar(17) NOT NULL,
-  `via` varchar(10) NOT NULL,
+  `via` varchar(10) NULL,
   `token` varchar(17) NOT NULL,
-  `dial_code` int(10) NOT NULL,
-  `dial_status` varchar(30) NOT NULL,
-  `call_status` varchar(30) NOT NULL,
-  `result` varchar(20) NOT NULL,
-  `is_done` tinyint(1) NOT NULL
+  `dial_code` int(10) NULL,
+  `dial_status` varchar(30) NULL,
+  `call_status` varchar(30) NULL,
+  `result` varchar(20) NULL,
+  `is_done` tinyint(1) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
