@@ -1,11 +1,30 @@
 # docker use git
 docker run -v ${PWD}:/git alpine/git clone git@github.com:sitepoint-editors/sitepoint-docker-tutorial.git
 
-# docker-compose
-docker-compose up --build
-docker-compose up -d
-
 # To delete all containers run the command
 docker rm $(docker ps -a -q)
 # To delete all images run the command
 docker rmi $(docker images -q)
+
+# 容器和容器之间的数据共享
+docker run -it -h NEWCONTAINER --volumes-from container-test debian /bin/bash
+意思是，将container-test这个container中的volume挂载到当前将要运行起来的容器中。前提是container-test中的volumes必须被创建过，但是container-test可以是被stop的，原因是volume只能被手动删除，不是随着容器停止而被删除.
+# 数据容器
+准备一个容器专门用来做数据容器，比如
+docker run -d -v /dbdata --name dbdata postgres echo Data-only container for postgres
+运行postgres这个容器然后给他配置一个volume，其他容器都可以--volumes-from到这个volume，数据容器可以不在运行状态甚至可以被删除，只要volume创建了即可。
+# 不同docker compose文件中container的数据共享和上面的方法一样但是需要external
+volumes:
+    mydata:
+      external: true
+前提你必须要有mydata这个volume 如果没有，可以使用docker volume create --name=mydata创建.
+# Volume
+docker volume ls
+docker volume rm lamp_mysql-data
+docker volumn inspect lamp_mysql-data
+
+# attach / dettach
+docker run -dit --name alpine1 alpine ash
+docker attach alpine1
+docker container stop alpine1
+docker container rm alpine1

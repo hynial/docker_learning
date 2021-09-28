@@ -1,0 +1,10 @@
+# docker-compose
+# 构建修改过的Dockfile
+docker-compose up --build
+# 后台运行
+docker-compose up -d
+
+# 运行的容器
+docker-compose ps
+# 停止删除运行的容器
+docker-compose down

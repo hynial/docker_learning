@@ -1,0 +1,16 @@
+# ref : https://docs.docker.com/network/network-tutorial-standalone/
+
+
+# List current networks
+docker network ls
+
+# Inspect the bridge network
+docker network inspect bridge
+
+
+# Create the alpine-net network.
+docker network create --driver bridge alpine-net
+
+# Connect to bridge
+docker run -dit --name alpine4 --network alpine-net alpine ash
+docker network connect bridge alpine4
