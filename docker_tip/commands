@@ -19,6 +19,7 @@ volumes:
       external: true
 前提你必须要有mydata这个volume 如果没有，可以使用docker volume create --name=mydata创建.
 # Volume
+docker volume create --name=mydata
 docker volume ls
 docker volume rm lamp_mysql-data
 docker volumn inspect lamp_mysql-data

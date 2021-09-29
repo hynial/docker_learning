@@ -1,0 +1,39 @@
+version: '3.7'
+services:
+    web:
+        image: nginx:latest
+        container_name: ms-nginx8880
+        ports:
+            - "8880:80"
+        volumes:
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - /data/docker_volumes/lnmp/minishop/app:/app
+    mysql:
+        image: mysql:5.7
+        container_name: ms-mysql-server-57
+        command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password --init-file /data/init.sql
+        restart: always
+        environment:
+          MYSQL_ROOT_HOST: '%' # allow login from any IP, needs to be enclosed with quotes
+          MYSQL_ROOT_PASSWORD: r00t
+          MYSQL_DATABASE: 'minishop'
+          MYSQL_USER: 'minishop'
+          MYSQL_PASSWORD: 'minish0p'
+          MYSQL_TCP_PORT: 13307
+        ports:
+            - '13307:13307'
+        expose:
+            - "13307"
+        volumes:
+            - /data/docker_volumes/lnmp/minishop/mysql:/var/lib/mysql
+            - ./docker.cnf:/etc/mysql/conf.d/docker.cnf
+            - /data/docker_volumes/lnmp/minishop/initdb/admin_minishop.sql:/data/init.sql
+    php:
+        build:
+            context: .
+            dockerfile: phpfpm.Dockerfile
+        container_name: ms-php9000
+        volumes:
+            - /data/docker_volumes/lnmp/minishop/app:/app
+        depends_on:
+            - mysql
