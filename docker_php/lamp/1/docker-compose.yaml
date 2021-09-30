@@ -10,6 +10,9 @@ services:
       - "./tav5/:/var/www/"
     ports:
       - "8880:80"
+    environment:
+          - APACHE_DOCUMENT_ROOT=/var/www/html/
+          
   mysql-server:
     image: mysql:8.0.19
     restart: always

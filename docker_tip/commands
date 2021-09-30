@@ -23,6 +23,15 @@ docker volume create --name=mydata
 docker volume ls
 docker volume rm lamp_mysql-data
 docker volumn inspect lamp_mysql-data
+# remove container & associated anonymous volume
+docker rm -v mysql_db_1
+# list and remove all the dangling volumes
+docker volume ls -qf dangling=true
+docker volume rm $(docker volume ls -qf dangling=true)
+# inspect volume
+docker inspect test-vol
+# Remove all volumes
+docker volume prune
 
 # attach / dettach
 docker run -dit --name alpine1 alpine ash
