@@ -6,7 +6,7 @@ services:
         ports:
             - "8880:80"
         volumes:
-            - ${PWD}/nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - ${PWD}/nginx.conf:/etc/nginx/conf.d/default.conf
             - /data/docker_volumes/lnmp/minishop/app:/app
     mysql:
         image: mysql:5.7

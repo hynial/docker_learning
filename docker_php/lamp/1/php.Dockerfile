@@ -27,3 +27,4 @@ RUN docker-php-ext-install gd
 
 
 RUN a2enmod rewrite
+# RUN a2enmod rewrite headers && /etc/init.d/apache2 restart
