@@ -8,3 +8,8 @@ docker-compose up -d
 docker-compose ps
 # 停止删除运行的容器
 docker-compose down
+
+docker-compose start
+docker-compose stop
+
+docker-compose logs
