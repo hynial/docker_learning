@@ -2,6 +2,7 @@
 
 
 # List current networks
+docker network help
 docker network ls
 
 # Inspect the bridge network
@@ -11,6 +12,52 @@ docker network inspect bridge
 # Create the alpine-net network.
 docker network create --driver bridge alpine-net
 
+# remove a user-defined bridge network.
+docker network rm my-net
+
+# remove all custom networks not used by at least one container
+docker network prune
+
 # Connect to bridge
 docker run -dit --name alpine4 --network alpine-net alpine ash
 docker network connect bridge alpine4
+
+# Connect a container to a user-defined bridge : https://docs.docker.com/network/bridge/
+docker create --name my-nginx  --network my-net  --publish 8080:80  nginx:latest
+
+# connect a running container to an existing user-defined bridge
+docker network connect my-net my-nginx
+docker network disconnect my-net my-nginx
+
+# forward a port from one docker container to another
+docker run --net=container:A postgres
+
+# Enable forwarding from Docker containers to the outside world
+sysctl net.ipv4.conf.all.forwarding=1
+sudo iptables -P FORWARD ACCEPT
+
+# The Overlay Driver
+docker network create -d overlay my-overlay-network
+docker network create -d overlay --attachable my-attachable-overlay
+
+# The Macvlan Driver
+
+# Dockerfile
+docker-gen:
+    image: jwilder/docker-gen:0.7.3
+    container_name: ld-proxy-gen
+    depends_on:
+      - nginx
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    networks:
+      - localhost
+    entrypoint: /usr/local/bin/docker-gen -notify-sighup ld-proxy-nginx -watch -wait 5s:30s /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+
+networks:
+  localhost:
+    external: true
+
+# Public Networking， -P (publish all available ports) or -p (publish specific ports) flag.
+docker run -it --rm nginx -p 8080:80
+
