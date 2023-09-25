@@ -1,5 +1,30 @@
+https://www.runoob.com/docker/docker-tutorial.html
+
+
+# 构建镜像
+docker build -t apache/php7 -f php7.Dockerfile .
+# squash
+docker build --squash
+# commit 配合 squash -- set "experimental": true
+docker commit container-name big-image-name
+echo "FROM big-image-name\n" > Dockerfile
+docker build --squash -t small-image-name .
+
+
 # docker use git
 docker run -v ${PWD}:/git alpine/git clone git@github.com:sitepoint-editors/sitepoint-docker-tutorial.git
+
+# docker container with env variables
+docker run --env-file ./env.list ubuntu bash
+docker run -d -t -i -e REDIS_NAMESPACE='staging' \ 
+-e POSTGRES_ENV_POSTGRES_PASSWORD='foo' \
+-e POSTGRES_ENV_POSTGRES_USER='bar' \
+-e POSTGRES_ENV_DB_NAME='mysite_staging' \
+-e POSTGRES_PORT_5432_TCP_ADDR='docker-db-1.hidden.us-east-1.rds.amazonaws.com' \
+-e SITE_URL='staging.mysite.com' \
+-p 80:80 \
+--link redis:redis \  
+--name container_name dockerhub_id/image_name
 
 # To delete all containers run the command
 docker rm $(docker ps -a -q)
@@ -32,9 +57,59 @@ docker volume rm $(docker volume ls -qf dangling=true)
 docker inspect test-vol
 # Remove all volumes
 docker volume prune
+# show volumes info
+docker inspect apachePhp7 | grep -C 3 -E '"Binds"|"Mounts"|"Volumes"'
 
 # attach / dettach
 docker run -dit --name alpine1 alpine ash
 docker attach alpine1
 docker container stop alpine1
 docker container rm alpine1
+
+docker system prune 
+WARNING! This will remove:
+  - all stopped containers
+  - all networks not used by at least one container
+  - all dangling images
+  - all dangling build cache
+
+docker history --no-trunc image_id
+
+docker ps -a --format="{{.Names}} {{.ID}} {{.Image}}"
+
+list your dangling images:
+docker images -qf "dangling=true"
+
+clean dangling image without touching images that are being used by containers:
+docker image prune
+
+# list containers associate an image.
+docker container ls --all --filter=ancestor=rabbitmq:3.8-management-alpine --format "{{.ID}}"
+
+# rebuild the image from the base image without using cached layers by using the --no-cache option.
+docker build -t my-custom-nginx --no-cache .
+docker build -t my-custom-nginx --build-arg CACHEBUST=$(date +%s) .
+# in dockerfile
+# Custom cache invalidation
+ARG CACHEBUST=1
+
+
+# To specify a tagged image to be used as a cache source for the docker build command, use the --cache-from argument.
+docker build --cache-from $CI_REGISTRY_IMAGE:latest --tag $CI_REGISTRY_IMAGE:latest .
+
+
+# export / import
+docker container export -o myalpine.tar my-alpine
+docker image import myalpine.tar my-alpine-restored
+
+# https://www.baeldung.com/linux/docker-container-add-volume
+#  Adding a Volume by Modifying the config.v2.json File
+docker volume create my-volume
+docker create/run --mount source=my-volume,target=/opt/my-volume
+
+# commit command creates a new image from an existing container.
+docker container commit my-alpine my-alpine-committed
+
+# copy 
+docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH
+docker cp [OPTIONS] SRC_PATH CONTAINER:DEST_PATH

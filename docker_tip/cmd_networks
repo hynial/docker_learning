@@ -1,5 +1,26 @@
 # ref : https://docs.docker.com/network/network-tutorial-standalone/
 
+# https://saturncloud.io/blog/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-machine/#:~:text=Look%20for%20the%20Gateway%20field,the%20Docker%20host%20is%20172.17.
+These networking options include bridge networking, host networking, overlay networking, and MACVLAN networking.
+by default connected to the bridge network
+The host networking driver only works on Linux hosts, and is not supported on Docker Desktop for Mac, Docker Desktop for Windows, or Docker EE for Windows Server.
+
+# use host.docker.internal which gives the localhost of the macos. This is for development purpose and will not work in a production environment outside of Docker Desktop for Windows / Mac.
+# container access docker host from macos . You can also reach the gateway using "gateway.docker.internal".
+# for linux : docker run -it --add-host=host.docker.internal:host-gateway
+# yml config for docker-compose: 
+extra_hosts:
+      - "host.docker.internal:host-gateway"
+curl -X GET -H 'Accept: application/json' 'http://host.docker.internal:9000'
+
+
+# start a container with host networking:
+docker run --net=host <image-name>
+
+# show ip address
+docker inspect apachePhp7 | grep "IPAddress"
+# ports
+docker port apachePhp7
 
 # List current networks
 docker network help
